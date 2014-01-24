@@ -1,0 +1,16 @@
+result.cache.seconds = 600
+
+hbase.zookeeper.quorum = 192.168.1.93,192.168.1.94,192.168.1.95
+hbase.pool.size=100
+
+elastic.search.cluster = lezhi
+elastic.search.hosts = 192.168.1.136
+redis.hosts = 192.168.1.134
+cassandra.hosts = 192.168.1.137, 192.168.1.138
+redis.hosts = localhost
+
+frontier.host = localhost
+thumbnail.frontier.host = localhost
+
+flume.host = 192.168.1.234:41414
+

@@ -1,0 +1,13 @@
+article.patterns = bShareRecommDiv, static.bshare.cn
+
+
+elastic.search.hosts = 192.168.1.136
+
+frontier.host =localhost
+thumbnail.frontier.host = localhost
+
+zookeeper.hosts=192.168.1.93,192.168.1.94,192.168.1.95
+zokeeper.path=/lezhi-crawlers
+
+hbase.zookeeper.quorum = 192.168.1.93,192.168.1.94,192.168.1.95
+htable.pool.size=100
