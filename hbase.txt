@@ -1,0 +1,3 @@
+create 'crawl', {NAME => 'metadata', VERSIONS => 1}
+create 'search', {NAME => 'keywords', VERSIONS => 1},{NAME => 'docstatus',VERSIONS => 1},{NAME => 'top',VERSIONS => 1}
+create 'behavior', {NAME => 'itemdb',VERSIONS => 1},{NAME => 'top',VERSIONS => 1},{NAME => 'profile', VERSIONS => 100, TTL => 2592000}

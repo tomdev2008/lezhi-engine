@@ -1,0 +1,164 @@
+http://192.168.1.215:9200/_template/content_tpl
+PUT
+{
+    "template" : "content_*",
+    "settings" : {
+        "number_of_shards" : 1,
+	"index.mapper.dynamic" : false
+    },
+    "mappings" : {
+        "doc" : {
+          "properties" : {
+	    "id" : {"type" : "long", "store": "yes"},
+            "url" : {"type" : "string", "index" : "not_analyzed", "omit_norms": "true", "store": "yes"},
+	    "signature" : {"type" : "string", "index" : "not_analyzed", "omit_norms": "true", "store": "yes"},
+            "keyword" : {"type" : "string", "index_analyzer" : "lezhi_keyword", "index_options": "positions", "omit_norms": "true", "store": "no"},
+	    "count" : {"type": "int", "index": "no", "store": "yes"},
+            "lastModified" : {"type" : "long", "store": "yes"}
+	  }
+        }
+    }
+}
+
+http://192.168.1.215:9200/content_e.gmw.cn/doc/1
+PUT
+{
+  "url": "http://e.gmw.cn/2012-11/26/content_5806068.htm",
+  "title": "范冰冰感谢王学兵 盘点分手不反目的明星旧爱(1)_娱乐频道_光明网",
+  "titlehash": "范冰冰感谢王学兵 盘点分手不反目的明星旧爱",
+  "thumbnail": "",
+  "keyword": "范冰冰|4,2 明星|9,3 旧爱|7,3 分手|7,3 王学兵|3,3",
+  "lastModified": "1353859200000"
+}
+
+http://192.168.1.215:9200/content_e.gmw.cn/doc/_search
+GET
+{
+  "query" : {
+    "lezhi" : {
+      "fields": "keyword.0:1 keyword.1:4 keyword.2:5 keyword.3:6",
+      "terms": "扬言#3@keyword.0:0.1673431859774193 男主角#1@keyword.0:0.7540591208787603 排除#2@keyword.0:0.14081962115009938 朋友#2@keyword.0:0.459728868960273 莫文蔚#1@keyword.0:1.0 合作#7@keyword.0:0.08903485883505796 介意#4@keyword.0:0.1883674081371067 娱乐圈#1@keyword.0:0.7214044476996578 坦言#2@keyword.0:0.16993018624822684 冯德伦#1@keyword.1:1.0 明星#9@keyword.3:0.5459706407080699 旧爱#7@keyword.3:0.5827899076547037 周丽淇#3@keyword.0:1.0 郑嘉颖#3@keyword.0:1.0 分手#7@keyword.3:0.1883674081371067 郑伊健#1@keyword.0:1.0 荧幕#2@keyword.0:0.8000000000000002 范冰冰#4@keyword.2:1.0 机会#2@keyword.0:0.4668485557937154 王学兵#3@keyword.3:1.0 拍电影#1@keyword.0:0.6142634976141934",
+      "largesttitle": "范冰冰感谢王学兵 盘点分手不反目的明星旧爱",
+      "reftime": "1353859200000"
+    }
+  }
+}
+
+  "query" : {
+    "lezhi" : {
+      "fieldboost": [1, 4, 8, 10],
+      "keyword": "范冰冰|4,2,1.0 王学兵|3,3,1.0",
+      "largesttitle": "abc",
+      "reftime": "1353859200000"
+    }
+  }
+
+########################
+cf
+########################
+http://192.168.1.215:9200/_template/user_tpl
+PUT
+{
+    "template" : "user_*",
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+        "user" : {
+          "properties" : {
+	    "id": { "type": "String", "index": "no", "store": "yes"},
+	    "bucket" : {"type" : "string", "index_options": "docs", "index_analyzer" : "whitespace", "omit_norms": "true", "store": "no"},
+	    "minhash": {"type": "string", "index_options": "docs", "index_analyzer" : "whitespace", "omit_norms": "true", "store": "no"},
+            "lastModified" : {"type" : "long", "store": "yes"},
+	    "count": { "type": "integer", "index": "no", "store": "yes"}
+	  }
+        }
+    }
+}
+
+http://192.168.1.215:9200/_template/item_tpl
+PUT
+{
+    "template" : "item_*",
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+        "item" : {
+          "properties" : {
+	    "id": { "type": "String", "index": "no", "store": "yes"},
+	    "url" : {"type" : "string", "index" : "not_analyzed", "omit_norms": "true", "store": "yes"},
+	    "title": { "type": "String", "index": "no", "store": "yes"},
+	    "bucket" : {"type" : "string", "index_options": "docs", "index_analyzer" : "whitespace", "omit_norms": "true", "store": "no"},
+	    "minhash": {"type": "string", "index_options": "docs", "index_analyzer" : "whitespace", "omit_norms": "true", "store": "no"},
+	    "snippet": { "type": "String", "index_analyzer" : "snippet", "omit_norms": "true", "store": "no"},
+	    "keyword": { "type": "String", "index_options": "docs", "index_analyzer" : "whitespace", "omit_norms": "true", "store": "no"},
+            "lastModified" : {"type" : "long", "store": "yes"},
+	    "count": { "type": "integer", "index": "no", "store": "yes"}
+	  }
+        }
+    }
+}
+
+http://192.168.1.215:9200/test/user/u1/_update/
+POST
+{
+  "lang": "native",
+  "script": "merge-minhash",
+  "params" : {
+    "field" : "minhashes",
+    "minhashes": "0-1-1-1 1-2-2-2",
+    "lastModified": 1365524756223
+  },
+  "upsert":{
+    "minhashes": "0-1-2-3 1-4-5-6",
+    "lastModified": 1265524756223
+  }
+}
+
+http://192.168.1.215:9200/test/user/u1/_update/
+POST
+{
+  "lang": "native",
+  "script": "merge-minhash",
+  "params" : {
+    "field" : "minhash",
+    "minhash": "0-1-1-1 1-2-2-2",
+    "lastModified": 10000
+  },
+  "upsert":{
+    "minhash": "0-1-1-1 1-2-2-2"
+  }
+}
+
+http://192.168.1.215:9200/user_testbed/user/_search
+POST
+{
+  "query" : {
+    "minhash_query" : {
+      "minhash": "0-yj1z9 1-1a67bf 2-15wb3a 3-qp1jv 4-7blfp 5-htdp5 6-5ug7q 7-7jhmp 8-39wd1 9-41u4t a-4cgk0 b-4jd4i c-ognpa d-bxumy e-1djc5 f-8uknr g-g5hkv h-kxjea i-ud424 j-a4jsu k-10lrx l-uu0bv m-dqdvf n-plp0z o-iy5b4 p-axwh5 q-epq9d r-eslj1 s-8bwgj t-lsalo u-9yd75 v-7piuc w-r3y8r x-10ojyg y-c121m z-3flki3 10-6epl 11-g19pd 12-k4x4c 13-1asjjh 14-7p7mr 15-fepae 16-gg5h0 17-27ix9 18-9x3hw 19-viu87 1a-1g89ml 1b-15nch0 1c-qpsi3 1d-r0ax0 1e-1i1ja 1f-36wcw 1g-myz21 1h-kanq5 1i-9mrds 1j-th2z 1k-9ts45 1l-dsy69 1m-avm6x 1n-kijo4 1o-h2pb5 1p-61p81 1q-b0vd2 1r-43sz6 1s-2ekdj 1t-1efwku 1u-qanc1 1v-ggxuz 1w-doaz5 1x-a2nw0 1y-42app 1z-1h9qfa 20-110o9n 21-16r8p 22-2nbuq 23-gkikx 24-7akpf 25-tb8w3 26-fh4jf 27-562g1 28-1v6tj 29-16ztib 2a-h9uco 2b-2j46j 2c-i2ebd 2d-egstc 2e-c58ah 2f-rehtt 2g-e7js5 2h-hmb30 2i-7fq2r 2j-13g6yf 2k-iy3b2 2l-a02y8 2m-x8365 2n-ligei 2o-cbgkb 2p-dagml 2q-1267tq 2r-i87ec"
+    }
+  }
+}
+
+
+http://192.168.1.215:9200/_template/phrase_tpl
+PUT
+{
+    "template" : "phrase_*",
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+        "phrase" : {
+          "properties" : {
+	    "id": { "type": "String", "index": "no", "store": "yes"},
+	    "url" : {"type" : "string", "index" : "not_analyzed", "omit_norms": "true", "store": "yes"},
+	    "title": { "type": "String", "index": "no", "store": "yes"},
+	    "snippet": { "type": "String", "index_analyzer" : "snippet", "omit_norms": "true", "store": "no"},
+	    "keyword": { "type": "String", "index_options": "docs", "index_analyzer" : "whitespace", "omit_norms": "true", "store": "no"},
+            "lastModified" : {"type" : "long", "store": "yes"}
+	  }
+        }
+    }
+}

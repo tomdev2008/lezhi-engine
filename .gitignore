@@ -1,0 +1,18 @@
+*.class
+*.project
+*.classpath
+*.cache
+*.iml
+
+# Package Files #
+*.war
+*.ear
+
+target
+project/boot/
+
+.jvmopts
+pgp.sbt
+.history
+.settings
+.DS_Store

@@ -1,0 +1,13 @@
+cache.cacheonly = false
+result.cache.seconds = 600
+
+hbase.zookeeper.quorum = 10.40.8.101,10.40.8.102,10.40.8.103
+hbase.pool.size=100
+
+elastic.search.cluster = test
+elastic.search.hosts = 10.40.5.102,10.40.5.103,10.40.5.104
+redis.hosts = 10.40.5.101
+
+flume.host =
+
+image.blacklist = http://lezhi.b0.upaiyun.com/opinion_m4_cn/9db0f010e454cd73366f23155fc65eb2.jpeg

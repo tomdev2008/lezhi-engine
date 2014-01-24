@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+  <property>
+      <name>fs.defaultFS</name>
+      <value>file:///</value>
+  </property>
+  <property>
+     <name>fs.file.impl</name>
+     <value>com.buzzinate.dm.fs.CLocalFileSystem</value>
+  </property>
+  <property>
+    <name>cassandra.input.thrift.address</name>
+    <value>192.168.1.137</value>
+  </property>
+  <property>
+    <name>cassandra.output.thrift.address</name>
+    <value>192.168.1.137</value>
+  </property>
+  <property>
+    <name>cassandra.thrift.address</name>
+    <value>192.168.1.137</value>
+  </property>
+</configuration>
